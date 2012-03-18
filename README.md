@@ -24,12 +24,10 @@ How to use this patch:
 	--- device     cbb	    # cardbus (yenta) bridg
 	+++ #device     cbb	    # cardbus (yenta) bridg
 
-3. Add the following line to the file /usr/src/sys/conf/files :
+3. Add the following line to the file /usr/src/sys/conf/files , note that the added line should next to the line which has `dev/mfi/mfi_cam.c optional mfi`:
 
 	    dev/mfi/mfi_cam.c optional mfi
 	+++ dev/mfi/mfi_syspd.c optional mfi
-
-note that the added line should next to the line which has `dev/mfi/mfi_cam.c optional mfi`.
 
 4. Replace the mfi driver patch:
 
@@ -43,7 +41,7 @@ note that the added line should next to the line which has `dev/mfi/mfi_cam.c op
 	cd /usr/src
 	make kernel KERNCONF=MYKERNEL
 
-One time patch using the patch file:
+One step patch using the patch file:
 ----------------------
 
 If you don't want to do manual patch, you can just use the .patch file in the repository.
