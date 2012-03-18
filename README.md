@@ -11,35 +11,37 @@ Test only on FreeBSD 9.0-release amd64, IBM M3 X3550.
 How to use this patch:
 ----------------------
 
-1. Make sure the kernel source has been installed on your system.
-2. Copy the kernel configuration:
+1.  Make sure the kernel source has been installed on your system.
 
-	cd /usr/src/sys/amd64/conf
-	cp GENERIC MYKERNEL
+2.  Copy the kernel configuration:
 
-3. Comment out the following line:
+	    cd /usr/src/sys/amd64/conf
+	    cp GENERIC MYKERNEL
+	    vi MYKERNEL
 
-	vi MYKERNEL
+    Comment out the following line:
 
-	--- device     cbb	    # cardbus (yenta) bridg
-	+++ #device     cbb	    # cardbus (yenta) bridg
+	    --- device     cbb	    # cardbus (yenta) bridg
+	    +++ #device     cbb	    # cardbus (yenta) bridg
 
-3. Add the following line to the file /usr/src/sys/conf/files , note that the added line should next to the line which has `dev/mfi/mfi_cam.c optional mfi`:
+3.  Add the following line to the file `/usr/src/sys/conf/files`.
 
-	    dev/mfi/mfi_cam.c optional mfi
-	+++ dev/mfi/mfi_syspd.c optional mfi
+    Note that the added line should next to the line which has `dev/mfi/mfi_cam.c optional mfi`:
 
-4. Replace the mfi driver patch:
+		dev/mfi/mfi_cam.c optional mfi
+	    +++ dev/mfi/mfi_syspd.c optional mfi
 
-	mv /usr/src/sys/dev/mfi /root/mfibackup
-	cd ~
-	git clone git://github.com/linpc/sas9240-freebsd-mfi-driver.git .
-	cp -r sas9240-freebsd-mfi-driver/9.0/mfi /usr/src/sys/dev/mfi
+4.  Replace the mfi driver patch:
 
-5. Rebuild the kernel:
+	    mv /usr/src/sys/dev/mfi /root/mfibackup
+	    cd ~
+	    git clone git://github.com/linpc/sas9240-freebsd-mfi-driver.git .
+	    cp -r sas9240-freebsd-mfi-driver/9.0/mfi /usr/src/sys/dev/mfi
 
-	cd /usr/src
-	make kernel KERNCONF=MYKERNEL
+5.  Rebuild the kernel:
+
+	    cd /usr/src
+	    make kernel KERNCONF=MYKERNEL
 
 One step patch using the patch file:
 ----------------------
