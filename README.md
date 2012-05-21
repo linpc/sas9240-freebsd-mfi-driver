@@ -15,33 +15,33 @@ How to use this patch:
 
 2.  Copy the kernel configuration:
 
-	    cd /usr/src/sys/amd64/conf
-	    cp GENERIC MYKERNEL
-	    vi MYKERNEL
+        cd /usr/src/sys/amd64/conf
+        cp GENERIC MYKERNEL
+        vi MYKERNEL
 
     Comment out the following line:
 
-	    --- device     cbb	    # cardbus (yenta) bridg
-	    +++ #device     cbb	    # cardbus (yenta) bridg
+        --- device     cbb          # cardbus (yenta) bridg
+        +++ #device     cbb         # cardbus (yenta) bridg
 
 3.  Add the following line to the file `/usr/src/sys/conf/files`.
 
     Note that the added line should next to the line which has `dev/mfi/mfi_cam.c optional mfi`:
 
-		dev/mfi/mfi_cam.c optional mfi
-	    +++ dev/mfi/mfi_syspd.c optional mfi
+            dev/mfi/mfi_cam.c optional mfi
+        +++ dev/mfi/mfi_syspd.c optional mfi
 
 4.  Replace the mfi driver patch:
 
-	    mv /usr/src/sys/dev/mfi /root/mfibackup
-	    cd ~
-	    git clone git://github.com/linpc/sas9240-freebsd-mfi-driver.git .
-	    cp -r sas9240-freebsd-mfi-driver/9.0/mfi /usr/src/sys/dev/mfi
+        mv /usr/src/sys/dev/mfi /root/mfibackup
+        cd ~
+        git clone git://github.com/linpc/sas9240-freebsd-mfi-driver.git .
+        cp -r sas9240-freebsd-mfi-driver/9.0/mfi /usr/src/sys/dev/mfi
 
 5.  Rebuild the kernel:
 
-	    cd /usr/src
-	    make kernel KERNCONF=MYKERNEL
+        cd /usr/src
+        make kernel KERNCONF=MYKERNEL
 
 One step patch using the patch file:
 ----------------------
@@ -50,9 +50,9 @@ If you don't want to do manual patch, you can just use the .patch file in the re
 
 Also, make sure you have kernel source installed:
 
-	cd /usr/src
-	patch -s -d /usr/src  < /root/sas9240-freebsd-mfi-driver/patch_9.0.diff
-	make kernel KERNCONF=GENERIC
+    cd /usr/src
+    patch -s -d /usr/src  < /root/sas9240-freebsd-mfi-driver/patch_9.0.diff
+    make kernel KERNCONF=GENERIC
 
 Supported Controllers
 ----------------------
